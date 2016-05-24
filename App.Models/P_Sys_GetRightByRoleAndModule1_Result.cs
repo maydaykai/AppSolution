@@ -10,16 +10,15 @@
 namespace App.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class SysLog
+    public partial class P_Sys_GetRightByRoleAndModule1_Result
     {
         public string Id { get; set; }
-        public string Operator { get; set; }
-        public string Message { get; set; }
-        public string Result { get; set; }
-        public string Type { get; set; }
-        public string Module { get; set; }
-        public Nullable<System.DateTime> CreateTime { get; set; }
+        public string Name { get; set; }
+        public string KeyCode { get; set; }
+        public string ModuleId { get; set; }
+        public bool isvalid { get; set; }
+        public int Sort { get; set; }
+        public string RightId { get; set; }
     }
 }
