@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DB.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DB.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="SysException">
           <Key>
             <PropertyRef Name="Id" />
@@ -35,15 +35,15 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="EnglishName" Type="varchar" MaxLength="200" />
           <Property Name="ParentId" Type="varchar" MaxLength="50" />
           <Property Name="Url" Type="varchar" MaxLength="200" />
           <Property Name="Iconic" Type="varchar" MaxLength="200" />
           <Property Name="Sort" Type="int" />
-          <Property Name="Remark" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Remark" Type="varchar" MaxLength="4000" />
           <Property Name="Enable" Type="bit" Nullable="false" />
-          <Property Name="CreatePerson" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreatePerson" Type="varchar" MaxLength="200" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="IsLast" Type="bit" Nullable="false" />
           <Property Name="Version" Type="timestamp" StoreGeneratedPattern="Computed" />
@@ -138,8 +138,8 @@
           <Property Name="School" Type="varchar" MaxLength="50" />
           <Property Name="Professional" Type="varchar" MaxLength="100" />
           <Property Name="Degree" Type="varchar" MaxLength="20" />
-          <Property Name="DepId" Type="varchar" MaxLength="50" />
-          <Property Name="PosId" Type="varchar" MaxLength="50" />
+          <Property Name="DepId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PosId" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Expertise" Type="varchar" MaxLength="3000" />
           <Property Name="JobState" Type="varchar" MaxLength="20" />
           <Property Name="Photo" Type="varchar" MaxLength="200" />
@@ -251,9 +251,8 @@
           <Parameter Name="url" Type="varchar" Mode="In" />
         </Function>
         <Function Name="P_Sys_InsertSysRight" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="P_Sys_UpdateSysRightRightFlag" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="moduleId" Type="varchar" Mode="In" />
-          <Parameter Name="roleId" Type="varchar" Mode="In" />
+        <Function Name="spGenInsertSQL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tablename" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="DBStoreContainer">
           <EntitySet Name="SysException" EntityType="Self.SysException" Schema="dbo" store:Type="Tables" />
@@ -347,6 +346,13 @@
             <Parameter Name="roleId" Mode="In" Type="String" />
             <Parameter Name="moduleId" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="spGenInsertSQL">
+          <Parameter Name="tablename" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="P_Sys_GetRightByRoleAndModule1" ReturnType="Collection(DB.P_Sys_GetRightByRoleAndModule1_Result)">
+            <Parameter Name="roleId" Mode="In" Type="String" />
+            <Parameter Name="moduleId" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="SysSample">
           <Key>
@@ -365,14 +371,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="EnglishName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="ParentId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Url" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Iconic" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Sort" Type="Int32" />
-          <Property Name="Remark" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="CreatePerson" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="CreatePerson" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="IsLast" Type="Boolean" Nullable="false" />
           <Property Name="Version" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
@@ -496,8 +502,8 @@
           <Property Name="School" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Professional" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Degree" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="DepId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PosId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DepId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PosId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Expertise" Type="String" MaxLength="3000" FixedLength="false" Unicode="false" />
           <Property Name="JobState" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Photo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -569,6 +575,15 @@
           <Property Type="Boolean" Name="IsValid" Nullable="false" />
         </ComplexType>
         <ComplexType Name="P_Sys_GetRightByRoleAndModule_Result">
+          <Property Type="String" Name="Id" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="KeyCode" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="ModuleId" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="isvalid" Nullable="false" />
+          <Property Type="Int32" Name="Sort" Nullable="false" />
+          <Property Type="String" Name="RightId" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="P_Sys_GetRightByRoleAndModule1_Result">
           <Property Type="String" Name="Id" Nullable="false" MaxLength="200" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="200" />
           <Property Type="String" Name="KeyCode" Nullable="false" MaxLength="200" />
@@ -744,10 +759,10 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="P_Sys_ClearUnusedRightOperate" FunctionName="DB.Store.P_Sys_ClearUnusedRightOperate" />
           <FunctionImportMapping FunctionImportName="P_Sys_InsertSysRight" FunctionName="DB.Store.P_Sys_InsertSysRight" />
-          <FunctionImportMapping FunctionImportName="P_Sys_UpdateSysRightRightFlag" FunctionName="DB.Store.P_Sys_UpdateSysRightRightFlag" />
-          <FunctionImportMapping FunctionImportName="P_Sys_GetRightByRoleAndModule" FunctionName="DB.Store.P_Sys_GetRightByRoleAndModule">
+          <FunctionImportMapping FunctionImportName="spGenInsertSQL" FunctionName="DB.Store.spGenInsertSQL" />
+          <FunctionImportMapping FunctionImportName="P_Sys_GetRightByRoleAndModule1" FunctionName="DB.Store.P_Sys_GetRightByRoleAndModule">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="DB.P_Sys_GetRightByRoleAndModule_Result">
+              <ComplexTypeMapping TypeName="DB.P_Sys_GetRightByRoleAndModule1_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
@@ -758,7 +773,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

@@ -25,13 +25,15 @@ namespace App.IDAL
         }
         public int UpdateRight(SysRightOperateModel model)
         {
+            //转换
             SysRightOperate rightOperate = new SysRightOperate();
             rightOperate.Id = model.Id;
             rightOperate.RightId = model.RightId;
             rightOperate.KeyCode = model.KeyCode;
             rightOperate.IsValid = model.IsValid;
-            
-            using(DBContainer db = new DBContainer())
+
+            //判断rightOperate是否存在，如果存在就更新rightOperate,否则就添加一条
+            using (DBContainer db = new DBContainer())
             {
                 SysRightOperate right = db.SysRightOperate.Where(a => a.Id == rightOperate.Id).FirstOrDefault();
                 if(right !=null)
@@ -44,6 +46,7 @@ namespace App.IDAL
                 }
                 if(db.SaveChanges()>0)
                 {
+                    //更新角色--模块的有效标志RightFlag
                     var sysRight = (from r in db.SysRight
                                     where r.Id == rightOperate.RightId
                                     select r).First();

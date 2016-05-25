@@ -11,7 +11,7 @@ namespace App.Models
 {
     using System;
     
-    public partial class P_Sys_GetRightByRoleAndModule_Result
+    public partial class P_Sys_GetRightByRoleAndModule1_Result
     {
         public string Id { get; set; }
         public string Name { get; set; }
