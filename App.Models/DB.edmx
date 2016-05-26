@@ -251,6 +251,10 @@
           <Parameter Name="url" Type="varchar" Mode="In" />
         </Function>
         <Function Name="P_Sys_InsertSysRight" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="P_Sys_UpdateSysRightRightFlag" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="moduleId" Type="varchar" Mode="In" />
+          <Parameter Name="roleId" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGenInsertSQL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="tablename" Type="varchar" Mode="In" />
         </Function>
@@ -348,10 +352,6 @@
           </FunctionImport>
           <FunctionImport Name="spGenInsertSQL">
           <Parameter Name="tablename" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="P_Sys_GetRightByRoleAndModule1" ReturnType="Collection(DB.P_Sys_GetRightByRoleAndModule1_Result)">
-            <Parameter Name="roleId" Mode="In" Type="String" />
-            <Parameter Name="moduleId" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="SysSample">
@@ -583,15 +583,6 @@
           <Property Type="Int32" Name="Sort" Nullable="false" />
           <Property Type="String" Name="RightId" Nullable="true" MaxLength="100" />
         </ComplexType>
-        <ComplexType Name="P_Sys_GetRightByRoleAndModule1_Result">
-          <Property Type="String" Name="Id" Nullable="false" MaxLength="200" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" />
-          <Property Type="String" Name="KeyCode" Nullable="false" MaxLength="200" />
-          <Property Type="String" Name="ModuleId" Nullable="false" MaxLength="50" />
-          <Property Type="Boolean" Name="isvalid" Nullable="false" />
-          <Property Type="Int32" Name="Sort" Nullable="false" />
-          <Property Type="String" Name="RightId" Nullable="true" MaxLength="100" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -760,9 +751,9 @@
           <FunctionImportMapping FunctionImportName="P_Sys_ClearUnusedRightOperate" FunctionName="DB.Store.P_Sys_ClearUnusedRightOperate" />
           <FunctionImportMapping FunctionImportName="P_Sys_InsertSysRight" FunctionName="DB.Store.P_Sys_InsertSysRight" />
           <FunctionImportMapping FunctionImportName="spGenInsertSQL" FunctionName="DB.Store.spGenInsertSQL" />
-          <FunctionImportMapping FunctionImportName="P_Sys_GetRightByRoleAndModule1" FunctionName="DB.Store.P_Sys_GetRightByRoleAndModule">
+          <FunctionImportMapping FunctionImportName="P_Sys_GetRightByRoleAndModule" FunctionName="DB.Store.P_Sys_GetRightByRoleAndModule">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="DB.P_Sys_GetRightByRoleAndModule1_Result">
+              <ComplexTypeMapping TypeName="DB.P_Sys_GetRightByRoleAndModule_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
@@ -773,6 +764,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="P_Sys_UpdateSysRightRightFlag" FunctionName="DB.Store.P_Sys_UpdateSysRightRightFlag" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -94,18 +94,5 @@ namespace App.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGenInsertSQL", tablenameParameter);
         }
-    
-        public virtual ObjectResult<P_Sys_GetRightByRoleAndModule1_Result> P_Sys_GetRightByRoleAndModule1(string roleId, string moduleId)
-        {
-            var roleIdParameter = roleId != null ?
-                new ObjectParameter("roleId", roleId) :
-                new ObjectParameter("roleId", typeof(string));
-    
-            var moduleIdParameter = moduleId != null ?
-                new ObjectParameter("moduleId", moduleId) :
-                new ObjectParameter("moduleId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<P_Sys_GetRightByRoleAndModule1_Result>("P_Sys_GetRightByRoleAndModule1", roleIdParameter, moduleIdParameter);
-        }
     }
 }
